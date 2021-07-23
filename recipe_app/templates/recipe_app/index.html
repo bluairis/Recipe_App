@@ -1,0 +1,11 @@
+{% if latest_recipe_list %}
+    <ul>
+    {% for recipe in latest_recipe_list %}
+        <li><a href="{% url 'recipe_app:recipe_page' recipe.id %}">{{ recipe.recipe_name }} </a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{% url 'recipe_app:delete_recipe' recipe.id %}"> Click Here to Delete this Recipe </a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No recipes are available.</p>
+{% endif %}
