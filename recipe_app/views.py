@@ -21,7 +21,7 @@ def recipe_page(request, recipe_id):
         our_recipe
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
-    return HttpResponse("You're looking at the recipe for %s." % our_recipe.recipe_name)
+    return render(request, 'recipe_app/recipe_page.html', {'recipe': our_recipe})
 
 def delete_recipe(request, recipe_id):
     our_recipe = Recipe.objects.get(pk=recipe_id)

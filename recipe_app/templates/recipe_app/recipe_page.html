@@ -1,9 +1,14 @@
 <h1>{{ recipe.recipe_name }}</h1>
 <ul>
-{% for ingredient in recipe.ingredient_set.all %}
+
+<h2> Ingredients: </h2>
+<ul>{% for ingredient in recipe.ingredient_set.all %}
     <li>{{ ingredient.ingredient_name }}</li>
-    
-{% for direction in recipe.direction_set.all %}
+{% endfor %}</ul>
+
+<h2> Directions: </h2>
+<ol>{% for direction in recipe.direction_set.all %}
     <li>{{ direction.step }}</li>
-{% endfor %}
+{% endfor %}</ol>
 </ul>
+
