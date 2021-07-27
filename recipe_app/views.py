@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from .models import Recipe, Ingredient, Direction
 
 def index(request):
-    latest_recipe_list = Recipe.objects.order_by('-pub_date')[:5]
+    latest_recipe_list = Recipe.objects.order_by('-pub_date')
     template = loader.get_template('recipe_app/index.html')
     context = {
         'latest_recipe_list': latest_recipe_list,
@@ -43,25 +43,23 @@ def add_recipe(request):
 
     if ingredient_confirmation == "yes":
         quantity_of_ingredients = int(input("How many ingredients would you like to add? "))
-
-    for x in range(quantity_of_ingredients):
-        ingredient = recipe.ingredient_set.create(ingredient_name = input("Enter the name and quantity of the ingredient. Type \"stop\" if you have no more ingredients. "))
-        if ingredient.ingredient_name == "stop":
-            ingredient.delete()
-            break
+        for x in range(quantity_of_ingredients):
+            ingredient = recipe.ingredient_set.create(ingredient_name = input("Enter the name and quantity of the ingredient. Type \"stop\" if you have no more ingredients. "))
+            if ingredient.ingredient_name == "stop":
+                ingredient.delete()
+                break
 
     direction_confirmation = input("Would you like to add directions? Type yes or no. ")
     while direction_confirmation != "yes" and direction_confirmation != "no":
         direction_confirmation = input("Please respond with yes or no. ")
 
-    if direction == "yes":
-        quantity_of_directions = int(input("How many ingredients would you like to add? "))
-
-    for x in range(quantity_of_directions):
-        direction = recipe.direction_set.create(step = input("Enter the name and quantity of the ingredient. Type \"stop\" if you have no more ingredients. "))
-        if direction.step == "stop":
-            direction.delete()
-            break
+    if direction_confirmation == "yes":
+        quantity_of_directions = int(input("How many directions would you like to add? "))
+        for x in range(quantity_of_directions):
+            direction = recipe.direction_set.create(step = input("Enter your step. Type \"stop\" if you have no more ingredients. "))
+            if direction.step == "stop":
+                direction.delete()
+                break
     
     template = loader.get_template('recipe_app/add_recipe.html')
     context = {}
