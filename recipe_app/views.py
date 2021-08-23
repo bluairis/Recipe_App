@@ -74,6 +74,9 @@ def user_add_recipe(request):
         recipe_name = ""
     context = { 'recipe_name' : recipe_name }
     recipe = Recipe(recipe_name, pub_date = timezone.now())
+    print(recipe_name)
+    print(query_string)
+    print("bubblegum")
     #recipe.save()
     return render(request, template_path, context)
 
