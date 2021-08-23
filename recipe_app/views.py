@@ -64,3 +64,16 @@ def add_recipe(request):
     template = loader.get_template('recipe_app/add_recipe.html')
     context = {}
     return HttpResponse("Congratulations! The recipe for %s has been added. <br> <br>" %name + template.render(context, request))
+
+def user_add_recipe(request):
+    template_path = 'recipe_app/user_add_recipe.html'
+    query_string = request.GET
+    if query_string:
+        recipe_name = query_string["recipe_name"]
+    else:
+        recipe_name = ""
+    context = { 'recipe_name' : recipe_name }
+    recipe = Recipe(recipe_name, pub_date = timezone.now())
+    #recipe.save()
+    return render(request, template_path, context)
+
