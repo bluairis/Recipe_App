@@ -56,7 +56,7 @@ def add_recipe(request):
     if direction_confirmation == "yes":
         quantity_of_directions = int(input("How many directions would you like to add? "))
         for x in range(quantity_of_directions):
-            direction = recipe.direction_set.create(step = input("Enter your step. Type \"stop\" if you have no more ingredients. "))
+            direction = recipe.direction_set.create(step = input("Enter your step. Type \"stop\" if you have no more directions. "))
             if direction.step == "stop":
                 direction.delete()
                 break

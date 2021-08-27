@@ -1,3 +1,21 @@
+<style>
+.btn {
+  background-color: white;
+  border: none;
+  color: black;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: gray;
+}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 {% if latest_recipe_list %}
     <ul>
     {% for recipe in latest_recipe_list %}
@@ -9,13 +27,17 @@
 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-        <a href="{% url 'recipe_app:delete_recipe' recipe.id %}"> Click Here to Delete this Recipe </a></li>
+        <a href="{% url 'recipe_app:delete_recipe' recipe.id %}"><button class="btn"><i class="fa fa-trash"></i>  Delete Recipe</button></a>
     {% endfor %}
     </ul>
     <br>
-    <a href="/recipe_app/add"> Click Here to Add a Recipe </a>
-    <br>
-    <a href="/recipe_app/user_add"> Click Here to Add a Recipe as a User </a>
+    
 {% else %}
     <p>No recipes are available.</p>
 {% endif %}
+
+<a href="/recipe_app/add"><button class="btn"><i class="fa fa-plus"></i> Admin Add Recipe</button></a>
+
+<br>
+
+<a href="/recipe_app/user_add"><button class="btn"><i class="fa fa-plus"></i> User Add Recipe</button></a> 
