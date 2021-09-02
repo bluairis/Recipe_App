@@ -17,9 +17,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 {% if latest_recipe_list %}
-    <ul>
+    <ol>
     {% for recipe in latest_recipe_list %}
-        <li><a href="{% url 'recipe_app:recipe_page' recipe.id %}">{{ recipe.recipe_name }}</a>
+        <li><a href="{% url 'recipe_app:recipe_page' recipe.id %}"><button class="btn"> {{ recipe.recipe_name }} </button></a>
 
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -29,7 +29,7 @@
 
         <a href="{% url 'recipe_app:delete_recipe' recipe.id %}"><button class="btn"><i class="fa fa-trash"></i>  Delete Recipe</button></a>
     {% endfor %}
-    </ul>
+    </ol>
     <br>
     
 {% else %}
