@@ -20,15 +20,26 @@
 <h1>{{ recipe.recipe_name }}</h1>
 <ul>
 
-<h2> Ingredients: </h2>
-<ul>{% for ingredient in recipe.ingredient_set.all %}
-    <li>{{ ingredient.ingredient_name }}</li>
-{% endfor %}</ul>
+{% if recipe.latest_ingredient_list %}
+    <h2> Ingredients: </h2>
+    <ul>{% for ingredient in recipe.ingredient_set.all %}
+        <li>{{ ingredient.ingredient_name }}</li>
+    {% endfor %}</ul>
 
-<h2> Directions: </h2>
-<ol>{% for direction in recipe.direction_set.all %}
-    <li>{{ direction.step }}</li>
-{% endfor %}</ol>
+{% else %}
+    <p>No ingredients are available.</p>
+{% endif %}
+
+{% if recipe.latest_direction_list %}
+    <h2> Directions: </h2>
+    <ol>{% for direction in recipe.direction_set.all %}
+        <li>{{ direction.step }}</li>
+    {% endfor %}</ol>
+
+{% else %}
+    <p>No directions are available.</p>
+{% endif %}
+    
 <br><br>
 <a href="/recipe_app"><button class="btn"><i class="fa fa-home"></i> Return to Main Page</button></a>
 </ul>

@@ -9,13 +9,6 @@ from django.http import HttpResponse
 from .models import Recipe, Ingredient, Direction
 
 def index(request):
-    query_string = request.GET
-    if query_string:
-        recipe_name = query_string["recipe_name"]
-        recipe = Recipe(recipe_name = recipe_name, pub_date = timezone.now())
-        recipe.save()
-    else:
-        recipe_name = ""
     latest_recipe_list = Recipe.objects.order_by('-pub_date')
     template = loader.get_template('recipe_app/index.html')
     context = {
@@ -74,6 +67,14 @@ def add_recipe(request):
 
 def user_add_recipe(request):
     template_path = "recipe_app/user_add_recipe.html"
+    query_string = request.GET
+    if query_string:
+        recipe_name = query_string["recipe_name"]
+        recipe = Recipe(recipe_name = recipe_name, pub_date = timezone.now())
+        recipe.save()
+        id_num = recipe.id
+        print(id_num)
+        return render(request, 'recipe_app/recipe_page.html', {'recipe': recipe})
     return render(request, template_path)
     
 
