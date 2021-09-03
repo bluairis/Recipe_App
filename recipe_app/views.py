@@ -7,6 +7,7 @@ from django.utils import timezone
 
 from django.http import HttpResponse
 from .models import Recipe, Ingredient, Direction
+from . import utils
 
 def index(request):
     latest_recipe_list = Recipe.objects.order_by('-pub_date')
@@ -70,10 +71,20 @@ def user_add_recipe(request):
     query_string = request.GET
     if query_string:
         recipe_name = query_string["recipe_name"]
+        ingredient_list = query_string["ingredient_list"]
+        direction_list = query_string["direction_list"]
         recipe = Recipe(recipe_name = recipe_name, pub_date = timezone.now())
         recipe.save()
-        id_num = recipe.id
-        print(id_num)
+        myIngredientNameList = utils.make_ingredient_list(ingredient_list)
+        for i in myIngredientNameList:
+            print(i)
+            ingredient = recipe.ingredient_set.create(ingredient_name = i)
+            ingredient.save()
+        myDirectionNameList = utils.make_direction_list(direction_list)
+        for i in myDirectionNameList:
+            print (i)
+            direction = recipe.direction_set.create(step = i)
+            direction.save()
         return render(request, 'recipe_app/recipe_page.html', {'recipe': recipe})
     return render(request, template_path)
     
