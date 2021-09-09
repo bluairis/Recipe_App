@@ -20,25 +20,29 @@
 <h1>{{ recipe.recipe_name }}</h1>
 <ul>
 
-{% if recipe.latest_ingredient_list %}
+{% if recipe.ingredient_set.all %}
     <h2> Ingredients: </h2>
     <ul>{% for ingredient in recipe.ingredient_set.all %}
-        <li>{{ ingredient.ingredient_name }}</li>
+        <li>{{ ingredient.ingredient_name }}
+        <a href="{% url 'recipe_app:delete_ingredient' recipe.id ingredient.ingredient_name %}"><button class="btn"><i class="fa fa-trash"></i>  Delete Ingredient</button></a></li> 
     {% endfor %}</ul>
 
 {% else %}
     <p>No ingredients are available.</p>
 {% endif %}
 
-{% if recipe.latest_direction_list %}
-    <h2> Directions: </h2>
-    <ol>{% for direction in recipe.direction_set.all %}
-        <li>{{ direction.step }}</li>
-    {% endfor %}</ol>
+
+{% if recipe.direction_set.all %}
+<h2> Directions: </h2>
+<ol>{% for direction in recipe.direction_set.all %}
+    <li>{{ direction.step }}
+    <a href="{% url 'recipe_app:delete_direction' recipe.id direction.step %}"><button class="btn"><i class="fa fa-trash"></i>  Delete Direction</button></a></li> 
+{% endfor %}</ol>
 
 {% else %}
     <p>No directions are available.</p>
 {% endif %}
+
     
 <br><br>
 <a href="/recipe_app"><button class="btn"><i class="fa fa-home"></i> Return to Main Page</button></a>

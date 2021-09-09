@@ -33,41 +33,25 @@ def delete_recipe(request, recipe_id):
     context = {}
     return HttpResponse("The recipe for %s has been deleted. <br> <br>" %name + template.render(context, request))
 
+def delete_ingredient(request, recipe_id, ingredient_name):
+    our_recipe = Recipe.objects.get(pk=recipe_id)
+    name = ingredient_name.lower()
+    our_ingredient = our_recipe.ingredient_set.filter(ingredient_name__startswith=ingredient_name)
+    our_ingredient.delete()
+    template = loader.get_template('recipe_app/delete_ingredient.html')
+    context = {'recipe': our_recipe}
+    return HttpResponse("The ingredient %s has been deleted. <br> <br>" %name + template.render(context, request))
+
+def delete_direction(request, recipe_id, step):
+    our_recipe = Recipe.objects.get(pk=recipe_id)
+    our_direction = our_recipe.direction_set.filter(step__startswith=step)
+    our_direction.delete()
+    template = loader.get_template('recipe_app/delete_direction.html')
+    context = {'recipe': our_recipe}
+    return HttpResponse("The direction has been deleted. <br> <br>" + template.render(context, request))
+
 def add_recipe(request):
-    recipe = Recipe(recipe_name = input("Enter the name of the recipe: "), pub_date = timezone.now())
-    recipe.save()
-    name = recipe.recipe_name.lower()
-
-    ingredient_confirmation = input("Would you like to add ingredients? Type yes or no. ")
-    while ingredient_confirmation != "yes" and ingredient_confirmation != "no":
-        ingredient_confirmation = input("Please respond with yes or no. ")
-
-    if ingredient_confirmation == "yes":
-        quantity_of_ingredients = int(input("How many ingredients would you like to add? "))
-        for x in range(quantity_of_ingredients):
-            ingredient = recipe.ingredient_set.create(ingredient_name = input("Enter the name and quantity of the ingredient. Type \"stop\" if you have no more ingredients. "))
-            if ingredient.ingredient_name == "stop":
-                ingredient.delete()
-                break
-
-    direction_confirmation = input("Would you like to add directions? Type yes or no. ")
-    while direction_confirmation != "yes" and direction_confirmation != "no":
-        direction_confirmation = input("Please respond with yes or no. ")
-
-    if direction_confirmation == "yes":
-        quantity_of_directions = int(input("How many directions would you like to add? "))
-        for x in range(quantity_of_directions):
-            direction = recipe.direction_set.create(step = input("Enter your step. Type \"stop\" if you have no more directions. "))
-            if direction.step == "stop":
-                direction.delete()
-                break
-    
-    template = loader.get_template('recipe_app/add_recipe.html')
-    context = {}
-    return HttpResponse("Congratulations! The recipe for %s has been added. <br> <br>" %name + template.render(context, request))
-
-def user_add_recipe(request):
-    template_path = "recipe_app/user_add_recipe.html"
+    template_path = "recipe_app/add_recipe.html"
     query_string = request.GET
     if query_string:
         recipe_name = query_string["recipe_name"]
@@ -80,11 +64,13 @@ def user_add_recipe(request):
             print(i)
             ingredient = recipe.ingredient_set.create(ingredient_name = i)
             ingredient.save()
+            print (recipe.ingredient_set.all())
         myDirectionNameList = utils.make_direction_list(direction_list)
         for i in myDirectionNameList:
             print (i)
             direction = recipe.direction_set.create(step = i)
             direction.save()
+            print (recipe.direction_set.all())
         return render(request, 'recipe_app/recipe_page.html', {'recipe': recipe})
     return render(request, template_path)
     
