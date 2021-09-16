@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-<h1>{{ recipe.recipe_name }}</h1>
+<h1>{{ recipe.recipe_name }} <a href="{% url 'recipe_app:edit_recipe' recipe.id %}"><button class="btn"><i class="fa fa-edit"></i>  Edit Recipe</button></a></li> </h1>
 <ul>
 
 {% if recipe.ingredient_set.all %}
