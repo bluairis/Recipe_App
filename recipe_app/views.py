@@ -72,21 +72,18 @@ def add_recipe(request):
 
 def edit_recipe(request, recipe_id):
     template_path = "recipe_app/edit_recipe.html"
-    query_string = request.GET
-    if query_string:
-        recipe_name = query_string["recipe_name"]
-        ingredient_list = query_string["ingredient_list"]
-        direction_list = query_string["direction_list"]
-        our_recipe = Recipe.objects.get(pk=recipe_id)
-        our_recipe.recipe_name = recipe_name
-        myIngredientNameList = utils.make_ingredient_list(ingredient_list)
-        for i in myIngredientNameList:
-            ingredient = recipe.ingredient_set.create(ingredient_name = i)
-            ingredient.save()
-        myDirectionNameList = utils.make_direction_list(direction_list)
-        for i in myDirectionNameList:
-            direction = recipe.direction_set.create(step = i)
-            direction.save()
-        return render(request, 'recipe_app/recipe_page.html', {'recipe': recipe})
-    return render(request, template_path)
+    our_recipe = Recipe.objects.get(pk=recipe_id)
+    my_ingredient_string = ""
+    
+    for ingredient in our_recipe.ingredient_set.all():
+        my_ingredient_string += ingredient.ingredient_name.strip() + "\n"
+
+    my_direction_string = ""
+    
+    for direction in our_recipe.direction_set.all():
+        my_direction_string += direction.step.strip() + "\n\n"
+
+    context = {'recipe': our_recipe, 'ingredients': my_ingredient_string, 'directions': my_direction_string}
+
+    return render(request, template_path, context)
 

@@ -1,15 +1,15 @@
 <form action="/recipe_app/recipe.recipe_id/edit" method="get">
-    <label for="recipe_name">What is the recipe name?</label><br><br>
+    <label for="recipe_name">Edit the recipe name.</label><br><br>
     <input type="text" id="recipe_name" name="recipe_name" value="{{ recipe.recipe_name }}">
     <br>
     <br>
-    <label for="ingredient_list">Please type your list of ingredients and quantities, hitting return after each one.</label><br><br>
-<textarea id="ingredient_list" name="ingredient_list" rows="5" cols="50">
+    <label for="ingredient_list">Edit your list of ingredients and quantities, hitting return after each one.</label><br><br>
+<textarea id="ingredient_list" name="ingredient_list" rows="5" cols="50">{{ ingredients }}
   </textarea>
     <br>
     <br>
-    <label for="direction_list">Please type your list of directions, hitting return after each one.</label><br><br>
-<textarea id="direction_list" name="direction_list" rows="5" cols="50">
+    <label for="direction_list">Edit your list of directions, hitting return after each one.</label><br><br>
+<textarea id="direction_list" name="direction_list" rows="5" cols="50">{{ directions }}
   </textarea>
     <br>
     <br>
