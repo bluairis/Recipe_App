@@ -62,10 +62,10 @@
 <div class="dropdown">
   <button class="dropbtn"><i class="fa fa-sort"></i> Sort Recipes </button>
   <div class="dropdown-content">
-    <a href="#">Alphabetical Order</a>
-    <a href="#">Reverse Alphabetical Order</a>
-    <a href="#">Most Recently Published</a>
-    <a href="#">First Published</a>
+    <a href="{% url 'recipe_app:index' 'recipe_name' %}">Alphabetical Order</a>
+    <a href="{% url 'recipe_app:index' '-recipe_name' %}">Reverse Alphabetical Order</a>
+    <a href="{% url 'recipe_app:index' '-pub_date' %}">Most Recently Published</a>
+    <a href="{% url 'recipe_app:index' 'pub_date' %}">First Published</a>
   </div>
 </div>
 

@@ -9,8 +9,19 @@ from django.http import HttpResponse
 from .models import Recipe, Ingredient, Direction
 from . import utils
 
-def index(request):
-    latest_recipe_list = Recipe.objects.order_by('-pub_date')
+def index(request, *args, **kwargs):
+    if kwargs:
+        order = kwargs["sort_order"]
+    else:
+        order = '-pub_date'
+
+    if order == 'add':
+        template_path = "recipe_app/add_recipe.html"
+        
+    if order not in ['-pub_date', 'pub_date', '-recipe_name', 'recipe_name']:
+        order = '-pub_date'
+        
+    latest_recipe_list = Recipe.objects.order_by(order)
     template = loader.get_template('recipe_app/index.html')
     context = {
         'latest_recipe_list': latest_recipe_list,
@@ -72,18 +83,40 @@ def add_recipe(request):
 
 def edit_recipe(request, recipe_id):
     template_path = "recipe_app/edit_recipe.html"
-    our_recipe = Recipe.objects.get(pk=recipe_id)
-    my_ingredient_string = ""
+    query_string = request.GET
+    if query_string:
+        our_recipe = Recipe.objects.get(pk=recipe_id)
+        our_recipe.recipe_name = query_string["recipe_name"]
+        our_recipe.save()
+
+        ingredient_list = query_string["ingredient_list"]
+        direction_list = query_string["direction_list"]
+
+        myIngredientNameList = utils.make_ingredient_list(ingredient_list)
+        for i in myIngredientNameList: 
+            ingredient = our_recipe.ingredient_set.create(ingredient_name = i)
+            ingredient.save()
+
+        myDirectionNameList = utils.make_direction_list(direction_list)
+        for i in myDirectionNameList:
+            direction = our_recipe.direction_set.create(step = i)
+            direction.save()
+
+        return render(request, 'recipe_app/recipe_page.html', {'recipe': our_recipe})
+
+    else:
+        our_recipe = Recipe.objects.get(pk=recipe_id)
+        my_ingredient_string = ""
     
-    for ingredient in our_recipe.ingredient_set.all():
-        my_ingredient_string += ingredient.ingredient_name.strip() + "\n"
+        for ingredient in our_recipe.ingredient_set.all():
+            my_ingredient_string += ingredient.ingredient_name.strip() + "\n"
 
-    my_direction_string = ""
+        my_direction_string = ""
     
-    for direction in our_recipe.direction_set.all():
-        my_direction_string += direction.step.strip() + "\n\n"
+        for direction in our_recipe.direction_set.all():
+            my_direction_string += direction.step.strip() + "\n\n"
 
-    context = {'recipe': our_recipe, 'ingredients': my_ingredient_string, 'directions': my_direction_string}
+        context = {'recipe': our_recipe, 'ingredients': my_ingredient_string, 'directions': my_direction_string}
 
-    return render(request, template_path, context)
+        return render(request, template_path, context)
 
