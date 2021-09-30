@@ -1,4 +1,7 @@
 <style>
+
+h1 {text-align: center;}
+
 .btn {
   background-color: white;
   border: none;
@@ -55,22 +58,41 @@
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
+#myInput {
+  background-image: url('https://www.w3schools.com/css/searchicon.png'); /* Add a search icon to input */
+  background-position: 10px 12px; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 100%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
 </style>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div class="dropdown">
-  <button class="dropbtn"><i class="fa fa-sort"></i> Sort Recipes </button>
-  <div class="dropdown-content">
-    <a href="{% url 'recipe_app:index' 'recipe_name' %}">Alphabetical Order</a>
-    <a href="{% url 'recipe_app:index' '-recipe_name' %}">Reverse Alphabetical Order</a>
-    <a href="{% url 'recipe_app:index' '-pub_date' %}">Most Recently Published</a>
-    <a href="{% url 'recipe_app:index' 'pub_date' %}">First Published</a>
-  </div>
-</div>
-
 {% if latest_recipe_list %}
-    <ol>
+    <br>
+    <h1>Welcome to my recipe site! Below is a list of recipes!</h1>
+    <input type="text" id="myInput" onkeyup="filter()" placeholder="Search for recipes.." title="Type in a recipe">
+
+    <br>
+    <br>
+
+    <div class="dropdown">
+      <button class="dropbtn"><i class="fa fa-sort"></i> Sort Recipes </button>
+      <div class="dropdown-content">
+        <a href="{% url 'recipe_app:index' 'recipe_name' %}">Alphabetical Order</a>
+        <a href="{% url 'recipe_app:index' '-recipe_name' %}">Reverse Alphabetical Order</a>
+        <a href="{% url 'recipe_app:index' '-pub_date' %}">Most Recently Published</a>
+        <a href="{% url 'recipe_app:index' 'pub_date' %}">First Published</a>
+      </div>
+    </div>
+                        
+
+    <ol id=myOL>                       
     {% for recipe in latest_recipe_list %}
         <li><a href="{% url 'recipe_app:recipe_page' recipe.id %}"><button class="btn"> {{ recipe.recipe_name }} </button></a>
 
@@ -86,7 +108,27 @@
     <br>
     
 {% else %}
-    <p>No recipes are available.</p>
+    <h1>No recipes are available.</h1>
 {% endif %}
 
-<a href="/recipe_app/add"><button class="btn"><i class="fa fa-plus"></i> User Add Recipe</button></a>
+<a href="/recipe_app/add"><button class="btn"><i class="fa fa-plus"></i> Add Recipe</button></a>
+
+<script>
+                          
+function filter() {
+    var input, filter, ol, li, a, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ol = document.getElementById("myOL");
+    li = ol.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
