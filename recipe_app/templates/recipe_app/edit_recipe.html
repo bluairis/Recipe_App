@@ -23,10 +23,8 @@
     {% for direction in direction_list %}
         <br>
         <label for="direction_{{ direction }}"><h4>Edit the direction:</h4></label>
-        <textarea id="direction_{{ direction }}" name="direction_{{ direction }}" rows="5" cols="50">{{ direction }}
-  </textarea>
-
-    <br>
+        <input type="text" size=35 id="direction_{{ direction }}" name="direction_{{ direction }}" value="{{ direction }}">
+        <br>
 
     {% endfor %}
 

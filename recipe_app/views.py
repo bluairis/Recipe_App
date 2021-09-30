@@ -64,6 +64,7 @@ def delete_direction(request, recipe_id, step):
 def add_recipe(request):
     template_path = "recipe_app/add_recipe.html"
     query_string = request.GET
+    print("OG OG OG QUERY QUERY QUERY =========", query_string)
     if query_string: #query part of process
         #getting info from query_string
         recipe_name = query_string["recipe_name"]
@@ -92,7 +93,9 @@ def add_recipe(request):
 
 def edit_recipe(request, recipe_id):
     template_path = "recipe_app/edit_recipe.html"
-    query_string = request.GET 
+    query_string = request.GET
+
+    print("QUERY QUERY QUERY =========", query_string)
 
     if query_string: #query part of the process
         
