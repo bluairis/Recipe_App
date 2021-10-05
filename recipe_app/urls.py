@@ -5,7 +5,6 @@ from . import views
 app_name = 'recipe_app'
 urlpatterns = [
     path('', views.index, name='index'),
-    #path('<str:sort_order>', views.index, name='index'),
     path('add', views.add_recipe, name='add_recipe'),
     path('<int:recipe_id>/', views.recipe_page, name='recipe_page'),
     path('<int:recipe_id>/delete', views.delete_recipe, name='delete_recipe'),

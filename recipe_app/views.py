@@ -13,7 +13,6 @@ def index(request):
     query_string = request.GET
     
     if query_string:
-        print(query_string)
 
         try:
             sort_order = query_string["sort_order"]
@@ -26,14 +25,6 @@ def index(request):
             
         latest_recipe_list = Recipe.objects.order_by(sort_order)
 
-        
-##    if kwargs:
-##        order = kwargs["sort_order"]
-##    else:
-##        order = '-pub_date'
-##        
-##    if order not in ['-pub_date', 'pub_date', '-recipe_name', 'recipe_name']:
-##        order = '-pub_date'
 
     else:
         latest_recipe_list = Recipe.objects.order_by('-pub_date')
