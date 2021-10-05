@@ -4,35 +4,14 @@
     <input type="text" id="recipe_name" name="recipe_name" value="{{ recipe.recipe_name }}">
 
     <br>
-
-    {% for ingredient in ingredient_list %}
-        <br>
-        <label for="ingredient_{{ ingredient }}"><h4>Edit the ingredient name:</h4></label>
-        <input type="text" size=35 id="ingredient_{{ ingredient }}" name="ingredient_{{ ingredient }}" value="{{ ingredient }}">
-        <br>
-
-    {% endfor %}
-    <br>
    
     <label for="ingredient_list"><h4>Add ingredients to your list of ingredients and quantities, hitting return after each one.</h4></label>
-    <textarea id="ingredient_list" name="ingredient_list" rows="5" cols="50">
-  </textarea>
-
-    <br>
-
-    {% for direction in direction_list %}
-        <br>
-        <label for="direction_{{ direction }}"><h4>Edit the direction:</h4></label>
-        <input type="text" size=35 id="direction_{{ direction }}" name="direction_{{ direction }}" value="{{ direction }}">
-        <br>
-
-    {% endfor %}
+    <textarea id="ingredient_list" name="ingredient_list" rows="5" cols="50">{{ ingredient_list }}</textarea>
 
     <br>
 
     <label for="direction_list"><h4>Add directions to your list of directions, hitting return after each one.</h4></label>
-    <textarea id="direction_list" name="direction_list" rows="5" cols="50">
-  </textarea>
+    <textarea id="direction_list" name="direction_list" rows="5" cols="50">{{ direction_list }}</textarea>
 
     <br>
     <br>  

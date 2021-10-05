@@ -24,7 +24,7 @@
     <h2> Ingredients: </h2>
     <ul>{% for ingredient in recipe.ingredient_set.all %}
         <li>{{ ingredient.ingredient_name }}
-        <a href="{% url 'recipe_app:delete_ingredient' recipe.id ingredient.ingredient_name %}"><button class="btn"><i class="fa fa-trash"></i>  Delete Ingredient</button></a></li> 
+        <a href="{% url 'recipe_app:delete_ingredient' recipe.id ingredient.id %}"><button class="btn"><i class="fa fa-trash"></i>  Delete Ingredient</button></a></li> 
     {% endfor %}</ul>
 
 {% else %}
@@ -36,7 +36,7 @@
 <h2> Directions: </h2>
 <ol>{% for direction in recipe.direction_set.all %}
     <li>{{ direction.step }}
-    <a href="{% url 'recipe_app:delete_direction' recipe.id direction.step %}"><button class="btn"><i class="fa fa-trash"></i>  Delete Direction</button></a></li> 
+    <a href="{% url 'recipe_app:delete_direction' recipe.id direction.id %}"><button class="btn"><i class="fa fa-trash"></i>  Delete Direction</button></a></li> 
 {% endfor %}</ol>
 
 {% else %}

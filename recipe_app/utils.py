@@ -1,7 +1,7 @@
 from .models import Recipe, Ingredient, Direction
 
 def make_ingredient_list(newline_separated_str):
-    if (newline_separated_str == "  "):
+    if (len(newline_separated_str) == 0):
         return []
 
     myIngredientNameList = newline_separated_str.strip().split("\n")
@@ -14,7 +14,7 @@ def make_ingredient_list(newline_separated_str):
     return returnList
 
 def make_direction_list(newline_separated_str):
-    if (newline_separated_str == "  "):
+    if (len(newline_separated_str) == 0):
         return []
 
     myDirectionNameList = newline_separated_str.strip().split("\n")
