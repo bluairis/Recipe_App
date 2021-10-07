@@ -31,16 +31,14 @@
           <ol class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
           <ol>
           {% for recipe in latest_recipe_list %}
-            <li><a class="dropdown-item" href="/recipe_app/{{ recipe.id }}">{{ recipe.recipe_name }}</a></li>
+            <li><a class="dropdown-item" href="/recipe_app/{{ recipe.1.id }}">{{ recipe.1.recipe_name }}</a></li>
           {% endfor %}
           </ol>
         
     </div>
 
     {% endif %}
-
-    
-    
+ 
   </form>
 </nav>
 
@@ -48,14 +46,13 @@
     <br>
     <h3>Welcome! Below is a list of your recipes!</h3>
 
-    <input class="form-control" id="myInput" type="text" placeholder="Search for a recipe">
-
     <br>
     
 <table class="table table-striped table-bordered table-hover">
     <thead>
 
         <tr>
+          <th scope="col">#</th>
           <th scope="col">Recipe Name</th>
           <th scope="col">Date Published</th>
           <th scope="col">Deletion</th>
@@ -67,32 +64,21 @@
 
         {% for recipe in latest_recipe_list %}
             <tr>
-              <td> <a href="{% url 'recipe_app:recipe_page' recipe.id %}"><button class="btn" type="button">{{ recipe.recipe_name }} </button></a></td>
-              <td>Published: {{ recipe.pub_date }}</td>
-              <td><a href="{% url 'recipe_app:delete_recipe' recipe.id %}"><button class="btn btn-outline-dark" type="button"><i class="bi bi-trash"></i> Delete Recipe</button></a></td>
+              <td><button class="btn" type="button">{{ recipe.0 }}</button></td>
+              <td> <a href="{% url 'recipe_app:recipe_page' recipe.1.id %}"><button class="btn" type="button">{{ recipe.1.recipe_name }} </button></a></td>
+              <td><button class="btn" type="button">Published: {{ recipe.1.pub_date }}</button></td>
+              <td><a href="{% url 'recipe_app:delete_recipe' recipe.1.id %}"><button class="btn btn-outline-dark" type="button"><i class="bi bi-trash"></i> Delete Recipe</button></a></td>
             </tr>
         {% endfor %}
     
     </tbody>
   
 </table>
-
     
 {% else %}
     <h1>No recipes are available.</h1>
 {% endif %}
 
 </div>
-
-<script>
-$(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
-</script>
 
 {% endblock %}

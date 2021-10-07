@@ -25,14 +25,22 @@ def index(request):
             
         latest_recipe_list = Recipe.objects.order_by(sort_order)
 
-
     else:
         latest_recipe_list = Recipe.objects.order_by('-pub_date')
 
     template = loader.get_template('recipe_app/index.html')
+
+    
+    recipe_num = 1
+    my_tuple_list = []
+        
+    for recipe in latest_recipe_list:
+        my_tuple = (recipe_num, recipe)
+        my_tuple_list.append(my_tuple)
+        recipe_num += 1
     
     context = {
-        'latest_recipe_list': latest_recipe_list,
+        'latest_recipe_list': my_tuple_list,
         }
     
     return HttpResponse(template.render(context, request))
