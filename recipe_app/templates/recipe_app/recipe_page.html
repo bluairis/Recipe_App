@@ -1,3 +1,6 @@
+{% extends "recipe_app/base.html" %}
+{% block content %}
+
 <style>
 .btn {
   background-color: white;
@@ -16,9 +19,34 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+<div class="container-fluid">
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <form class="container-fluid justify-content-start">
+    <a class="navbar-brand" ><h1>{{ recipe.recipe_name }}</h1></a>
+    <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app">Home</a>
+    <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app/about">About</a>
+    <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app/{{ recipe.id }}/edit_recipe">Edit Recipe</a>
+    <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app/add">Add New Recipe</a>
+    
+    <div class="dropdown">
+        <button class="btn btn-outline-primary me-2 active dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+            Recipe List
+        </button>
+        
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
+          {% for recipe in latest_recipe_list %}
+            <li><a class="dropdown-item" href="/recipe_app/{{ recipe.id }}">{{ recipe.recipe_name }}</a></li>
+          {% endfor %}
+          </ul>
+        
+    </div>
 
-<h1>{{ recipe.recipe_name }} <a href="{% url 'recipe_app:edit_recipe' recipe.id %}"><button class="btn"><i class="fa fa-edit"></i>  Edit Recipe</button></a></li> </h1>
-<ul>
+    
+    
+  </form>
+</nav>
+
+<br>
 
 {% if recipe.ingredient_set.all %}
     <h2> Ingredients: </h2>
@@ -45,6 +73,7 @@
 
     
 <br><br>
-<a href="/recipe_app"><button class="btn"><i class="fa fa-home"></i> Return to Main Page</button></a>
-</ul>
 
+</div>
+
+{% endblock %}

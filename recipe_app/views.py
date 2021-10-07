@@ -43,7 +43,10 @@ def recipe_page(request, recipe_id):
         our_recipe
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
-    return render(request, 'recipe_app/recipe_page.html', {'recipe': our_recipe})
+
+    latest_recipe_list = Recipe.objects.order_by('-pub_date')
+    
+    return render(request, 'recipe_app/recipe_page.html', {'latest_recipe_list': latest_recipe_list, 'recipe': our_recipe})
 
 def delete_recipe(request, recipe_id):
     our_recipe = Recipe.objects.get(pk=recipe_id)
@@ -155,3 +158,6 @@ def edit_recipe(request, recipe_id):
 
         return render(request, template_path, context)
 
+def about(request):
+    template_path = "recipe_app/about.html"
+    return render(request, template_path)

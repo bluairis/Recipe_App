@@ -1,12 +1,12 @@
 {% extends "recipe_app/base.html" %}
 {% block content %}
 
-<div class="container">
+<div class="container-fluid">
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
   <form class="container-fluid justify-content-start">
-    <a class="navbar-brand" >Recipe App</a>
-    <button class="btn btn-outline-primary me-2 active" type="button">Home</button>
-    <button class="btn btn-outline-primary me-2" type="button">About</button>
+    <a class="navbar-brand" ><h1>Recipe App</h1></a>
+    <a class="btn btn-outline-primary me-2 active" type="button" href="/recipe_app"></i>Home</a>
+    <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app/about">About</a>
     <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app/add">Add Recipe</a>
 
     <div class="dropdown">
@@ -16,33 +16,66 @@
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
             <li><a class="dropdown-item" href="/recipe_app/?sort_order=recipe_name">Alphabetical Order</a></li>
             <li><a class="dropdown-item" href="/recipe_app/?sort_order=-recipe_name">Reverse Alphabetical Order</a></li>
-            <li><a class="dropdown-item" href=" href="/recipe_app/?sort_order=-pub_date">Most Recently Published</a></li>
+            <li><a class="dropdown-item" href="/recipe_app/?sort_order=-pub_date">Most Recently Published</a></li>
             <li><a class="dropdown-item" href="/recipe_app/?sort_order=pub_date">First Published</a></li>
           </ul>
     </div>
 
-    <input type="text" id="myInput" onkeyup="filter()" placeholder="Search for recipes.." title="Type in a recipe">
+    {% if latest_recipe_list %}
+    
+    <div class="dropdown">
+        <button class="btn btn-outline-dark me-2 dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+            Recipe List
+        </button>
+        
+          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
+          {% for recipe in latest_recipe_list %}
+            <li><a class="dropdown-item" href="/recipe_app/{{ recipe.id }}">{{ recipe.recipe_name }}</a></li>
+          {% endfor %}
+          </ul>
+        
+    </div>
+
+    {% endif %}
+
+    
+    
   </form>
 </nav>
 
 {% if latest_recipe_list %}
     <br>
-    <h1>Welcome to my recipe site! Below is a list of recipes!</h1>
-                
-    <ol id=myOL>                       
-    {% for recipe in latest_recipe_list %}
-        <li><a href="{% url 'recipe_app:recipe_page' recipe.id %}"><button class="btn"> {{ recipe.recipe_name }} </button></a>
+    <h3>Welcome! Below is a list of your recipes!</h3>
 
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input class="form-control" id="myInput" type="text" placeholder="Search for a recipe">
 
-        Published: {{ recipe.pub_date }}
-
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-        <a href="{% url 'recipe_app:delete_recipe' recipe.id %}"><button class="btn"><i class="fa fa-trash"></i>  Delete Recipe</button></a>
-    {% endfor %}
-    </ol>
     <br>
+    
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+
+        <tr>
+          <th scope="col">Recipe Name</th>
+          <th scope="col">Date Published</th>
+          <th scope="col">Deletion</th>
+        </tr>
+        
+    </thead>
+
+    <tbody id="myTable">
+
+        {% for recipe in latest_recipe_list %}
+            <tr>
+              <td> <a href="{% url 'recipe_app:recipe_page' recipe.id %}"><button class="btn" type="button">{{ recipe.recipe_name }} </button></a></td>
+              <td>Published: {{ recipe.pub_date }}</td>
+              <td><a href="{% url 'recipe_app:delete_recipe' recipe.id %}"><button class="btn btn-outline-dark" type="button">  Delete Recipe</button></a></td>
+            </tr>
+        {% endfor %}
+    
+    </tbody>
+  
+</table>
+
     
 {% else %}
     <h1>No recipes are available.</h1>
@@ -50,30 +83,15 @@
 
 </div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
-
-<a href="/recipe_app/add"><button class="btn"><i class="fa fa-plus"></i> Add Recipe</button></a>
-
 <script>
-                          
-function filter() {
-    var input, filter, ol, li, a, i, txtValue;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    ol = document.getElementById("myOL");
-    li = ol.getElementsByTagName("li");
-    for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("a")[0];
-        txtValue = a.textContent || a.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-        } else {
-            li[i].style.display = "none";
-        }
-    }
-}
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
 </script>
 
 {% endblock %}
