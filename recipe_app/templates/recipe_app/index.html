@@ -5,19 +5,19 @@
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
   <form class="container-fluid justify-content-start">
     <a class="navbar-brand" ><h1>Recipe App</h1></a>
-    <a class="btn btn-outline-primary me-2 active" type="button" href="/recipe_app"></i>Home</a>
-    <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app/about">About</a>
-    <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app/add">Add Recipe</a>
+    <a class="btn btn-outline-primary me-2 active" type="button" href="/recipe_app"><i class="bi bi-house"></i> Home</a>
+    <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app/about"><i class="bi bi-info-circle"></i> About</a>
+    <a class="btn btn-outline-primary me-2" type="button" href="/recipe_app/add"><i class="bi bi-plus"></i> Add Recipe</a>
 
     <div class="dropdown">
         <button class="btn btn-outline-dark me-2 dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-            Sort Recipes
+            <i class="bi bi-sort-down-alt"></i> Sort Recipes
         </button>
           <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
-            <li><a class="dropdown-item" href="/recipe_app/?sort_order=recipe_name">Alphabetical Order</a></li>
-            <li><a class="dropdown-item" href="/recipe_app/?sort_order=-recipe_name">Reverse Alphabetical Order</a></li>
-            <li><a class="dropdown-item" href="/recipe_app/?sort_order=-pub_date">Most Recently Published</a></li>
-            <li><a class="dropdown-item" href="/recipe_app/?sort_order=pub_date">First Published</a></li>
+            <li><a class="dropdown-item" href="/recipe_app/?sort_order=recipe_name"><i class="bi bi-sort-alpha-down"></i> Alphabetical Order</a></li>
+            <li><a class="dropdown-item" href="/recipe_app/?sort_order=-recipe_name"><i class="bi bi-sort-alpha-down-alt"></i> Reverse Alphabetical Order</a></li>
+            <li><a class="dropdown-item" href="/recipe_app/?sort_order=-pub_date"><i class="bi bi-sort-numeric-down-alt"></i> Most Recently Published</a></li>
+            <li><a class="dropdown-item" href="/recipe_app/?sort_order=pub_date"><i class="bi bi-sort-numeric-down"></i> First Published</a></li>
           </ul>
     </div>
 
@@ -25,14 +25,15 @@
     
     <div class="dropdown">
         <button class="btn btn-outline-dark me-2 dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-            Recipe List
+            <i class="bi bi-list-ol"></i> Recipe List
         </button>
         
-          <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
+          <ol class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
+          <ol>
           {% for recipe in latest_recipe_list %}
             <li><a class="dropdown-item" href="/recipe_app/{{ recipe.id }}">{{ recipe.recipe_name }}</a></li>
           {% endfor %}
-          </ul>
+          </ol>
         
     </div>
 
@@ -62,13 +63,13 @@
         
     </thead>
 
-    <tbody id="myTable">
+    <tbody>
 
         {% for recipe in latest_recipe_list %}
             <tr>
               <td> <a href="{% url 'recipe_app:recipe_page' recipe.id %}"><button class="btn" type="button">{{ recipe.recipe_name }} </button></a></td>
               <td>Published: {{ recipe.pub_date }}</td>
-              <td><a href="{% url 'recipe_app:delete_recipe' recipe.id %}"><button class="btn btn-outline-dark" type="button">  Delete Recipe</button></a></td>
+              <td><a href="{% url 'recipe_app:delete_recipe' recipe.id %}"><button class="btn btn-outline-dark" type="button"><i class="bi bi-trash"></i> Delete Recipe</button></a></td>
             </tr>
         {% endfor %}
     
