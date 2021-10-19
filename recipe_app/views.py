@@ -10,34 +10,18 @@ from .models import Recipe, Ingredient, Direction
 from . import utils
 
 def index(request):
+    template = loader.get_template('recipe_app/index.html')
+    
     query_string = request.GET
     
     if query_string:
 
-        try:
-            sort_order = query_string["sort_order"]
-            
-        except KeyError:
-            raise Http404("sort order not present")
-
-        if sort_order not in ['-pub_date', 'pub_date', '-recipe_name', 'recipe_name']:
-            raise Http404("entered sort order does not exist")
-            
-        latest_recipe_list = Recipe.objects.order_by(sort_order)
+        latest_recipe_list = utils.sorting_by_query(query_string)
 
     else:
         latest_recipe_list = Recipe.objects.order_by('-pub_date')
 
-    template = loader.get_template('recipe_app/index.html')
-
-    
-    recipe_num = 1
-    my_tuple_list = []
-        
-    for recipe in latest_recipe_list:
-        my_tuple = (recipe_num, recipe)
-        my_tuple_list.append(my_tuple)
-        recipe_num += 1
+    my_tuple_list = utils.numbering_recipes(latest_recipe_list)
     
     context = {
         'latest_recipe_list': my_tuple_list,
