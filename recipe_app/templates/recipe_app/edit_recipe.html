@@ -1,7 +1,7 @@
 <form action="{% url 'recipe_app:edit_recipe' recipe.id %}" method="get">
 
     <label for="recipe_name"><h1>Edit the recipe name:</h1></label>
-    <input type="text" id="recipe_name" name="recipe_name" value="{{ recipe.recipe_name }}">
+    <input type="text" id="recipe_name" name="recipe_name" value="{{ recipe.recipe_name }}" required>
 
     <br>
    
