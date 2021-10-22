@@ -167,7 +167,7 @@ class AllMyTests(TestCase):
 
         self.assertEquals(tuples, [])
     
-    # tests for views.add_recipe
+    # tests for views.add_recipe/views.edit_recipe
     
     def test_empty_ingredient_list(self):
         my_list = utils.make_ingredient_list("")
@@ -192,7 +192,70 @@ class AllMyTests(TestCase):
     def test_direction_special_chars(self):
         my_list = utils.make_direction_list("\\nStep1!\\***3/4,\\n\nStep2")
         self.assertEquals(my_list,["\\nStep1!\\***3/4,\\n","Step2"])
-  
+
+    def test_ingredient_and_direction_add_nothing(self):
+        r1 = Recipe(recipe_name = "r1", pub_date = timezone.now())
+        r1.save()
+        
+        query_string =  {'recipe_name': 'r1', 'ingredient_list': '', 'direction_list': ''}
+
+        utils.ingredient_and_direction_add(query_string, r1.id)
+
+        self.assertEquals(len(r1.ingredient_set.all()), 0)
+
+        self.assertEquals(len(r1.direction_set.all()), 0)
+        
+    # tests for views.edit_recipe
+
+    def test_grabbing_recipe_content(self):
+
+        # creating recipe
+        avocado_toast = Recipe(recipe_name = "Avocado Toast ...", pub_date = timezone.now())
+        avocado_toast.save()
+
+        # adding ingredients
+        bread = avocado_toast.ingredient_set.create(ingredient_name = "1 slice of bread (I like thick-sliced whole-grain bread best)")
+        bread.save()
+
+        avocado = avocado_toast.ingredient_set.create(ingredient_name = "1/2 ripe avocado")
+        avocado.save()
+
+        salt = avocado_toast.ingredient_set.create(ingredient_name = "pinch of salt")
+        salt.save()
+
+        toppings = avocado_toast.ingredient_set.create(ingredient_name = "Optional: Any of the extra toppings suggested in this post")
+        toppings.save()
+
+        #adding directions
+        toasting = avocado_toast.direction_set.create(step = "Toast your slice of bread until golden and firm.")
+        toasting.save()
+
+        removing = avocado_toast.direction_set.create(step = "Remove the pit from your avocado. Use a big spoon to scoop out the flesh. Put it in a bowl and mash it up with a fork until it’s as smooth as you like it. Mix in a pinch of salt (about 1/8 teaspoon) and add more to taste, if desired.")
+        removing.save()
+
+        spreading = avocado_toast.direction_set.create(step = "Spread avocado on top of your toast. Enjoy as-is or top with any extras offered in this post (I highly recommend a light sprinkle of flaky sea salt, if you have it).")
+        spreading.save()
+
+        #running function
+
+        context = utils.get_recipe_contents(avocado_toast.id)
+
+        self.assertEquals(context,{'recipe': avocado_toast,
+                                   'ingredient_list': bread.ingredient_name + "\n\n" +
+                                                      avocado.ingredient_name + "\n\n" +
+                                                      salt.ingredient_name + "\n\n" +
+                                                      toppings.ingredient_name,
+                                   'direction_list': toasting.step + "\n\n" +
+                                                     removing.step + "\n\n" +
+                                                     spreading.step})
+
+        
+
+        
+        
+
+
+        
 
     
 
