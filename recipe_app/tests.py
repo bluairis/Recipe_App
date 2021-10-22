@@ -204,6 +204,84 @@ class AllMyTests(TestCase):
         self.assertEquals(len(r1.ingredient_set.all()), 0)
 
         self.assertEquals(len(r1.direction_set.all()), 0)
+
+    def test_ingredient_and_direction_adding_ingredients(self):
+        r1 = Recipe(recipe_name = "r1", pub_date = timezone.now())
+        r1.save()
+        
+        query_string =  {'recipe_name': 'r1', 'ingredient_list': 'Chicken\nBeans', 'direction_list': ''}
+
+        utils.ingredient_and_direction_add(query_string, r1.id)
+
+        self.assertEquals(len(r1.ingredient_set.all()), 2)
+
+        self.assertEquals(len(r1.direction_set.all()), 0)
+
+    def test_ingredient_and_direction_adding_directions(self):
+        r1 = Recipe(recipe_name = "r1", pub_date = timezone.now())
+        r1.save()
+        
+        query_string =  {'recipe_name': 'r1', 'ingredient_list': 'Chicken\nBeans', 'direction_list': 'Bake\nClean\nEat'}
+
+        utils.ingredient_and_direction_add(query_string, r1.id)
+
+        self.assertEquals(len(r1.ingredient_set.all()), 2)
+
+        self.assertEquals(len(r1.direction_set.all()), 3)
+
+    def test_ingredient_and_direction_removing_ingredients(self):
+        r1 = Recipe(recipe_name = "r1", pub_date = timezone.now())
+        r1.save()
+
+        i1 = r1.ingredient_set.create(ingredient_name = "i1")
+        i1.save()
+
+        i2 = r1.ingredient_set.create(ingredient_name = "i2")
+        i2.save()
+
+        i3 = r1.ingredient_set.create(ingredient_name = "i3")
+        i3.save()
+        
+        query_string =  {'recipe_name': 'r1', 'ingredient_list': 'Chicken\nBeans', 'direction_list': ''}
+
+        utils.ingredient_and_direction_add(query_string, r1.id)
+
+        self.assertEquals(len(r1.ingredient_set.all()), 2)
+
+        self.assertEquals(len(r1.direction_set.all()), 0)
+
+    def test_ingredient_and_direction_removing_directions(self):
+        r1 = Recipe(recipe_name = "r1", pub_date = timezone.now())
+        r1.save()
+
+        i1 = r1.ingredient_set.create(ingredient_name = "i1")
+        i1.save()
+
+        i2 = r1.ingredient_set.create(ingredient_name = "i2")
+        i2.save()
+
+        i3 = r1.ingredient_set.create(ingredient_name = "i3")
+        i3.save()
+
+        d1 = r1.direction_set.create(step = "d1")
+        d1.save()
+
+        d2 = r1.direction_set.create(step = "d2")
+        d2.save()
+
+        d3 = r1.direction_set.create(step = "d3")
+        d3.save()
+
+        d4 = r1.direction_set.create(step = "d4")
+        d4.save()
+        
+        query_string =  {'recipe_name': 'r1', 'ingredient_list': 'Chicken\nBeans\ni1', 'direction_list': 'Clean\nd1\nd2'}
+
+        utils.ingredient_and_direction_add(query_string, r1.id)
+
+        self.assertEquals(len(r1.ingredient_set.all()), 3)
+
+        self.assertEquals(len(r1.direction_set.all()), 3)
         
     # tests for views.edit_recipe
 
